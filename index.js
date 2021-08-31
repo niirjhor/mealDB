@@ -4,16 +4,26 @@ const searchMeal = () => {
     const seachArea = searchText.value;
     searchText.value = ''; // clear search field
 
-    const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${seachArea}
+    if (seachArea == '') {
+        return ('Please enter a name')
+    }
+    else {
+        const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${seachArea}
 `
-    fetch(url)
-        .then(res => res.json())
-        .then(data => searchShow(data.meals))
+        fetch(url)
+            .then(res => res.json())
+            .then(data => searchShow(data.meals))
+    }
+
 }
 
 const searchShow = (meals) => {
     const searchResults = document.getElementById('search-result');
     searchResults.textContent = ''; // clear previous menu from the show result menu
+    if (meals.length == 0) {
+        return 'Please enter a name of a food'
+    }
+
     for (const meal of meals) {
         // console.log(meal);
         const div = document.createElement('div');
@@ -42,10 +52,11 @@ const details = mealID => {
 const displayDetails = meal => {
     console.log(meal);
     const mealDetailsText = document.getElementById('meal-details');
+    mealDetailsText.textContent = '';
     const div = document.createElement('div');
     div.classList.add('card');
     div.innerHTML = `
-        <img src="${meal.strMealThumb}" class="card-img-top" alt="...">
+        <img src="${meal.strMealThumb}" class="card-img-top w-50" alt="...">
         <div class="card-body">
             <h5 class="card-title">${meal.strMeal}</h5>
             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
